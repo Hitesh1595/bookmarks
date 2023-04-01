@@ -71,6 +71,14 @@ TEMPLATES = [
     },
 ]
 
+# LDAP
+AUTHENTICATION_BACKENDS = [
+    # default 
+    'django.contrib.auth.backends.ModelBackend',
+    # custom email
+    'account.authentication.EmailAuthBackend'
+]
+
 WSGI_APPLICATION = 'bookmarks.wsgi.application'
 
 
