@@ -47,6 +47,7 @@ from django.contrib.auth import logout
 #     return render(request,'account/logged_out.html')
 
 from account.forms import UserRegistrationForm
+from .models import Profile
 def register(request):
     if request.method == 'POST':
         user_form = UserRegistrationForm(request.POST)
@@ -60,9 +61,34 @@ def register(request):
 
             # save the user object
             new_user.save()
+            # Create the User Profile
+            Profile.objects.create(user=new_user)
 
             return render(request,'account/registration_done.html',{'new_user':new_user})
     else:
         user_form = UserRegistrationForm()
 
     return render(request,'account/register.html',{'user_form':user_form})
+
+from account.forms import UserEditForm,ProfileEditForm
+@login_required
+def edit(request):
+    if request.method == 'POST':
+        user_form = UserEditForm(instance=request.user,data = request.POST)
+        profile_form = ProfileEditForm(instance=request.user.profile,data = request.POST,files = request.FILES)
+
+        if user_form.is_valid() and profile_form.is_valid():
+            user_form.save()
+            profile_form.save()
+    else:
+        user_form = UserEditForm(instance=request.user) 
+        profile_form = ProfileEditForm(instance = request.user.profile)
+      
+
+
+    
+    context = {
+        'user_form':user_form,
+        'profile_form':profile_form
+    }
+    return render(request,'account/edit.html',context=context)
