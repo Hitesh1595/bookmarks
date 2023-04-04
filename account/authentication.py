@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
 
+# chapter 4 last pages
 class EmailAuthBackend:
     '''
     Authenticate using email

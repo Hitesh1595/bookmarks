@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-lkl4hrq8!u7s*mcsby*bx@s=7qjn@96=7*7ug_l)v#kc@z1f*i
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['mysite.com','localhost','127.0.0.1']
 
 
 # Application definition
@@ -40,6 +40,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    'social_django',
+    'django_extensions'
+
   
 ]
 
@@ -76,7 +80,9 @@ AUTHENTICATION_BACKENDS = [
     # default 
     'django.contrib.auth.backends.ModelBackend',
     # custom email
-    'account.authentication.EmailAuthBackend'
+    'account.authentication.EmailAuthBackend',
+
+    'social_core.backends.facebook.FacebookOAuth2',
 ]
 
 WSGI_APPLICATION = 'bookmarks.wsgi.application'
@@ -116,6 +122,13 @@ LOGIN_URL = 'login'
 LOGOUT_URL = 'logout'
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+# facebook app id
+SOCIAL_AUTH_FACEBOOK_KEY = '1453286452076191'
+# app secret
+SOCIAL_AUTH_FACEBOOK_SECRET = '3b437a36ccbee29bec777e6c7a758511'
+
+SOCIAL_AUTH_FACEBOOK_SCOPE = ['email']
 
 
 # Internationalization
