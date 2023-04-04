@@ -83,6 +83,8 @@ AUTHENTICATION_BACKENDS = [
     'account.authentication.EmailAuthBackend',
 
     'social_core.backends.facebook.FacebookOAuth2',
+
+    'social_core.backends.google.GoogleOAuth2',
 ]
 
 WSGI_APPLICATION = 'bookmarks.wsgi.application'
@@ -123,12 +125,30 @@ LOGOUT_URL = 'logout'
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
+SOCIAL_AUTH_PIPELINE = [
+    'social_core.pipeline.social_auth.social_details',
+    'social_core.pipeline.social_auth.social_uid',
+    'social_core.pipeline.social_auth.auth_allowed',
+    'social_core.pipeline.social_auth.social_user',
+    'social_core.pipeline.user.get_username',
+    'social_core.pipeline.user.create_user',
+    'social_core.pipeline.social_auth.associate_user',
+    'social_core.pipeline.social_auth.load_extra_data',
+    'social_core.pipeline.user.user_details',
+    # custom method after create user
+    'account.authentication.create_profile',
+]
+
 # facebook app id
 SOCIAL_AUTH_FACEBOOK_KEY = '1453286452076191'
 # app secret
 SOCIAL_AUTH_FACEBOOK_SECRET = '3b437a36ccbee29bec777e6c7a758511'
 
 SOCIAL_AUTH_FACEBOOK_SCOPE = ['email']
+
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '321482961218-mv7tdp5ksmcersgk65mtbj98am6afr9h.apps.googleusercontent.com'
+
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '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'
 
 
 # Internationalization
