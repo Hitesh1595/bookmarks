@@ -1,0 +1,57 @@
+from django.shortcuts import render,redirect
+from django.contrib.auth.decorators import login_required
+from django.contrib import messages
+from images.forms import ImageCreateForm
+from django.shortcuts import get_object_or_404
+from images.models import Image
+
+
+
+def image_detail(request,id,slug):
+    image = get_object_or_404(Image,id = id,slug = slug)
+    context = {
+        'section':"images",
+        'image':image
+    }
+    return render(request,'images/image/detail.html',context = context)
+
+
+# Create your views here.
+@login_required
+def image_create(request):
+    if request.method == 'POST':
+        print("post is trigger")
+        # from is sent
+        form = ImageCreateForm(data = request.POST)
+        if form.is_valid():
+            # form data is valid
+            cd = form.cleaned_data
+            new_image = form.save(commit = False)
+            # assign currnet user to the item
+            new_image.user = request.user
+            new_image.save()
+            messages.success(request,"Image added succesfully")
+
+            # redirect to new created item detail view
+            return redirect(new_image.get_absolute_url())
+        
+    else:
+        # build form with data provided by the bookmarklrt via get
+        form = ImageCreateForm(data =request.GET)
+
+    return render(request,'images/image/create.html',{'section':'images','form':form})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
