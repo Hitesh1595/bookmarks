@@ -26,7 +26,7 @@
                 </li>
                 <li {% if section == "people" %} class = "selected" {% endif %}>
                    
-                    <a href="http://">People</a>
+                    <a href="{% url 'user_list' %}">People</a>
                 </li>
             </ul>
         {% endif %}

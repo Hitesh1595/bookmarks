@@ -123,6 +123,13 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+from django.urls import reverse_lazy
+
+ABSOLUTE_URL_OVERRIDES = {
+    'auth.user': lambda u: reverse_lazy('user_detail',args=[u.username])
+}
+
+
 LOGIN_REDIRECT_URL = 'dashboard'
 LOGIN_URL = 'login'
 LOGOUT_URL = 'logout'
