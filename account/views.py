@@ -12,6 +12,8 @@ from django.http import JsonResponse
 from django.views.decorators.http import require_POST
 from account.models import Contact
 
+from actions.utils import create_action
+
 def user_follow(request):
     user_id = request.POST.get("id")
     action = request.POST.get("action")
@@ -20,6 +22,7 @@ def user_follow(request):
             user = User.objects.get(id = user_id)
             if action == 'follow':
                 Contact.objects.get_or_create(user_form = request.user,user_to = user)
+                create_action(request.user,'is following',user)
             else:
                 Contact.objects.filter(user_form = request.user,user_to = user).delete()
             return JsonResponse({"status":'ok'})
@@ -64,10 +67,22 @@ def user_login(request):
 
     return render(request, "account/login.xhtml", context=context)
 
-
+from actions.models import Action
 @login_required
 def dashboard(request):
-    context = {"section": "dashboard"}
+    print("dashboard")
+    # display all actions by default
+    actions = Action.objects.exclude(user = request.user)
+    print(actions)
+    following_ids = request.user.following.values_list('id',flat = True)
+
+    if following_ids:
+        # if user is following others , retrieve only their action
+        actions = actions.filter(user__id__in=following_ids)
+    actions = actions.select_related("user",'user__profile').prefetch_related('target')[:10]
+    context = {"section": "dashboard",
+               "actions":actions
+               }
 
     return render(request, "account/dashboard.html", context=context)
 
@@ -95,6 +110,7 @@ def register(request):
             new_user.save()
             # Create the User Profile
             Profile.objects.create(user=new_user)
+            create_action(new_user,'has created an account')
 
             return render(request,'account/registration_done.html',{'new_user':new_user})
     else:
