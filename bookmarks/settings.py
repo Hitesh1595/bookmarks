@@ -169,6 +169,11 @@ SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '321482961218-mv7tdp5ksmcersgk65mtbj98am6afr9h.a
 
 SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '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'
 
+# default setting after install pip install redis==4.3.4
+REDIS_HOST = 'localhost'
+REDIS_PORT = 6379
+REDIS_DB = 0
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/

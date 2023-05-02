@@ -28,6 +28,10 @@
                    
                     <a href="{% url 'user_list' %}">People</a>
                 </li>
+                <li {% if section == "ranking" %} class = "selected" {% endif %}>
+                   
+                    <a href="{% url 'images:ranking' %}">Image Ranking</a>
+                </li>
             </ul>
         {% endif %}
         <span class="user">
